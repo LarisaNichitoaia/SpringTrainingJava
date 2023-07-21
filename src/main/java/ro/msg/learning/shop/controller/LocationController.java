@@ -22,7 +22,7 @@ public class LocationController {
     @GetMapping("/{locationId}")
     public ResponseEntity<LocationDto> getLocationById(@PathVariable UUID locationId){
         try {
-            LocationDto location = locationService.getProductById(locationId);
+            LocationDto location = locationService.getLocationById(locationId);
             return new ResponseEntity<>(location, HttpStatus.FOUND);
         }
         catch (Exception exception){
@@ -34,7 +34,7 @@ public class LocationController {
     @GetMapping
     public ResponseEntity<List<LocationDto>> getAllLocations(){
         try {
-            List<LocationDto> locations = locationService.getAllProducts();
+            List<LocationDto> locations = locationService.getAllLocations();
             return new ResponseEntity<>(locations, HttpStatus.FOUND);
         }
         catch (Exception exception){

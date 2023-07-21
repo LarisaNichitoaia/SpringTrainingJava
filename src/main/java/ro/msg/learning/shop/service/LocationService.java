@@ -22,7 +22,7 @@ public class LocationService {
     @Autowired
     private LocationMapper locationMapper;
 
-    public LocationDto getProductById(UUID locationId) {
+    public LocationDto getLocationById(UUID locationId) {
         Location location = locationRepository.findById(locationId).orElse(null);
         if(location!=null){
             return locationMapper.toDto(location);
@@ -30,7 +30,7 @@ public class LocationService {
         throw new EntityNotFoundException(NO_LOCATION_IS_FOUND);
     }
 
-    public List<LocationDto> getAllProducts() {
+    public List<LocationDto> getAllLocations() {
         List<Location> allLocations = locationRepository.findAll();
         if(!allLocations.isEmpty()){
             List<LocationDto> locationsDto = new ArrayList<>();
