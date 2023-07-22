@@ -1,11 +1,14 @@
 package ro.msg.learning.shop.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ro.msg.learning.shop.domain.primarykeys.EntityKey;
 
 import java.time.LocalDateTime;
-@EqualsAndHashCode(callSuper = true)
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -6,7 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import ro.msg.learning.shop.domain.primarykeys.EntityKey;
 
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "product_category")
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS location (
     id UUID NOT NULL PRIMARY KEY ,
-    name varchar(50),
-    address_country varchar(50),
-    address_city varchar(50),
-    address_county varchar(50),
-    address_street varchar(50)
+    name VARCHAR(50) NOT NULL,
+    address_country VARCHAR(50) NOT NULL,
+    address_city VARCHAR(50) NOT NULL,
+    address_county VARCHAR(50) NOT NULL,
+    address_street VARCHAR(50) NOT NULL
 );

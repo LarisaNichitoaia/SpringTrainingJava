@@ -2,18 +2,19 @@ package ro.msg.learning.shop.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import ro.msg.learning.shop.domain.Product;
+import org.antlr.v4.runtime.misc.Pair;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
-public class OrderDto {
+public class GetOrderDto {
+    private UUID customerId;
     private LocalDateTime createdAt;
     private String addressCountry;
     private String addressCity;
     private String addressCounty;
     private String addressStreet;
-    private List<Product> productList;
+    private Pair<UUID, Integer> products;
 }

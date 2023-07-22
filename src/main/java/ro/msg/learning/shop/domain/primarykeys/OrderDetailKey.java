@@ -5,9 +5,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.UUID;
+
 @Data
 @NoArgsConstructor
-public class OrderDetailKey implements Serializable{
-        private UUID orderId;
-        private UUID productId;
+public class OrderDetailKey implements Serializable {
+    private UUID order;
+    private UUID location;
 }

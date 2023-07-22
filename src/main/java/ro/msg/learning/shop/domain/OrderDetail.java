@@ -19,14 +19,19 @@ import ro.msg.learning.shop.domain.primarykeys.OrderDetailKey;
 public class OrderDetail {
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
-    @Column(name = "order_id")
-    private Order orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @Id
     @JdbcTypeCode(SqlTypes.UUID)
-    @Column(name = "product_id")
-    private Location productId;
     @ManyToOne
-    private Location shoppedFrom;
+    @JoinColumn(name = "product_id")
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "shipped_from")
+    private Location shippedFrom;
+
     private Integer quantity;
 }

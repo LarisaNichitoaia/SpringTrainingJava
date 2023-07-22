@@ -1,20 +1,22 @@
 package ro.msg.learning.shop.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
+
 @Service
+@RequiredArgsConstructor
 public class ProductCategoryService {
-    @Autowired
-    private ProductCategoryRepository productCategoryRepo;
+
+    private final ProductCategoryRepository productCategoryRepo;
 
     public ProductCategory createProductCategory(String name, String description) {
         ProductCategory productCategory = ProductCategory.builder().name(name).description(description).build();
         return productCategoryRepo.save(productCategory);
     }
 
-    public ProductCategory findByName(String name){
+    public ProductCategory findByName(String name) {
         return productCategoryRepo.findCategoryByName(name);
     }
 }

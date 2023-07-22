@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS product_category (
     id UUID NOT NULL PRIMARY KEY,
-    name varchar(20),
-    description varchar(128)
+    name VARCHAR(20) NOT NULL,
+    description VARCHAR(128)
 );

@@ -7,7 +7,7 @@ import ro.msg.learning.shop.domain.Product;
 
 @Data
 @Builder
-public class StockDto {
+public class ViewStockDto {
     private Product product;
     private Location location;
     private Integer quantity;

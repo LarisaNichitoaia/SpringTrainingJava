@@ -3,10 +3,12 @@ package ro.msg.learning.shop.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ro.msg.learning.shop.domain.primarykeys.EntityKey;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
 @AllArgsConstructor

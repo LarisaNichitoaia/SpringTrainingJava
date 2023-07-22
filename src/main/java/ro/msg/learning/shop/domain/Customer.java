@@ -3,17 +3,19 @@ package ro.msg.learning.shop.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ro.msg.learning.shop.domain.primarykeys.EntityKey;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 @Table(name = "customer")
-public  class Customer extends EntityKey {
+public class Customer extends EntityKey {
     @Column(name = "first_name")
     private String firstName;
 
@@ -24,5 +26,6 @@ public  class Customer extends EntityKey {
 
     private String password;
 
+    @Column(name = "email_address")
     private String email;
 }
