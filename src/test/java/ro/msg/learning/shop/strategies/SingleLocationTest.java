@@ -1,4 +1,5 @@
 package ro.msg.learning.shop.strategies;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

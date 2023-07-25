@@ -1,4 +1,5 @@
 package ro.msg.learning.shop.domain;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

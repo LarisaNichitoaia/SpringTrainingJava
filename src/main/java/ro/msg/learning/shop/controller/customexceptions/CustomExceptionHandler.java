@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.rmi.NoSuchObjectException;
-import java.util.logging.Level;
 
 
 @ControllerAdvice

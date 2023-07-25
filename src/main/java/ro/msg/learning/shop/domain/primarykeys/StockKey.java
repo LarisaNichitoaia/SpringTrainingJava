@@ -1,4 +1,5 @@
 package ro.msg.learning.shop.domain.primarykeys;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -17,6 +17,7 @@ import ro.msg.learning.shop.service.ProductCategoryService;
 public class ProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
+
     @PostMapping
     public ResponseEntity<ProductCategory> createProductCategory(@RequestParam @NonNull String name, @RequestParam @NonNull String description) {
         ProductCategory productCategory = productCategoryService.createProductCategory(name, description);

@@ -1,4 +1,5 @@
 package ro.msg.learning.shop.strategies;
+
 import lombok.RequiredArgsConstructor;
 import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.Location;
