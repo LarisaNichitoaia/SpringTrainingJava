@@ -11,4 +11,10 @@ public class LocationMapper {
                 .addressCity(location.getAddressCity()).addressCounty(location.getAddressCounty())
                 .addressStreet(location.getAddressStreet()).build();
     }
+
+    public Location toEntity(LocationDto locationDto) {
+        return Location.builder().name(locationDto.getName())
+                .addressCountry(locationDto.getAddressCountry()).addressCity(locationDto.getAddressCity())
+                .addressCounty(locationDto.getAddressCounty()).addressStreet(locationDto.getAddressStreet()).build();
+    }
 }

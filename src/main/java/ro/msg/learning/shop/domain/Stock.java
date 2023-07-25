@@ -1,9 +1,9 @@
 package ro.msg.learning.shop.domain;
-
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ro.msg.learning.shop.domain.primarykeys.StockKey;
 
 @Entity
@@ -16,13 +16,11 @@ import ro.msg.learning.shop.domain.primarykeys.StockKey;
 public class Stock {
 
     @Id
-    @JdbcTypeCode(SqlTypes.UUID)
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
     @Id
-    @JdbcTypeCode(SqlTypes.UUID)
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;

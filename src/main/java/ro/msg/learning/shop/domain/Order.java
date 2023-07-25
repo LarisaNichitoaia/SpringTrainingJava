@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Order extends EntityKey {
     @JoinColumn(name = "customer_id")
     @ManyToOne
-    private Customer customerId;
+    private Customer customer;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

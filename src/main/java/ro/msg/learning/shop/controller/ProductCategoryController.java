@@ -13,16 +13,13 @@ import ro.msg.learning.shop.service.ProductCategoryService;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ProductCategory")
+@RequestMapping("/product-category")
 public class ProductCategoryController {
 
     private final ProductCategoryService productCategoryService;
-
     @PostMapping
     public ResponseEntity<ProductCategory> createProductCategory(@RequestParam @NonNull String name, @RequestParam @NonNull String description) {
         ProductCategory productCategory = productCategoryService.createProductCategory(name, description);
         return new ResponseEntity<>(productCategory, HttpStatus.CREATED);
     }
-
-
 }

@@ -1,14 +1,16 @@
 package ro.msg.learning.shop.controller;
-
 import io.micrometer.common.lang.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import ro.msg.learning.shop.dto.CreateStockDto;
-import ro.msg.learning.shop.dto.ViewStockDto;
+import ro.msg.learning.shop.domain.Location;
+import ro.msg.learning.shop.domain.Product;
+import ro.msg.learning.shop.domain.Stock;
+import ro.msg.learning.shop.dto.StockDto;
 import ro.msg.learning.shop.mapper.StockMapper;
+import ro.msg.learning.shop.service.LocationService;
+import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.service.StockService;
 
 import java.util.List;
@@ -16,62 +18,47 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/Stock")
+@RequestMapping("/stock")
 public class StockController {
-    public static final String STOCK_NOT_FOUND = "Stock Not Found";
+    private final ProductService productService;
+    private final LocationService locationService;
     private final StockService stockService;
     private final StockMapper stockMapper;
 
     @GetMapping("/{productId}/{locationId}")
-    public ResponseEntity<ViewStockDto> getStockById(@PathVariable UUID productId, @PathVariable UUID locationId) {
-        try {
-            ViewStockDto viewStockDto = stockMapper.toViewDto(stockService.getStockById(productId, locationId));
-            return new ResponseEntity<>(viewStockDto, HttpStatus.FOUND);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, STOCK_NOT_FOUND, exception);
-        }
-
+    public ResponseEntity<StockDto> getStockById(@PathVariable UUID productId, @PathVariable UUID locationId) {
+        StockDto viewStockDto = stockMapper.toDto(stockService.getStockById(productId, locationId));
+        return new ResponseEntity<>(viewStockDto, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ViewStockDto>> getAllStocks() {
-        try {
-            List<ViewStockDto> stocks = stockService.getAllStocks().stream().map(stockMapper::toViewDto).toList();
-            return new ResponseEntity<>(stocks, HttpStatus.FOUND);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, STOCK_NOT_FOUND, exception);
-        }
+    public ResponseEntity<List<StockDto>> getAllStocks() {
+        List<StockDto> stocks = stockService.getAllStocks().stream().map(stockMapper::toDto).toList();
+        return new ResponseEntity<>(stocks, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ViewStockDto> createStock(@RequestBody @NonNull CreateStockDto stockParams) {
-        ViewStockDto viewStockDto = stockMapper.toViewDto(stockService.createStock(stockParams));
+    public ResponseEntity<StockDto> createStock(@RequestBody @NonNull StockDto stockParams) {
+        Product product = productService.getProductById(UUID.fromString(stockParams.getProductId()));
+        Location location = locationService.getLocationById(UUID.fromString(stockParams.getLocationId()));
+        Stock stock = stockMapper.toEntity(product, location, stockParams);
+        StockDto viewStockDto = stockMapper.toDto(stockService.createStock(stock));
         return new ResponseEntity<>(viewStockDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{productId}/{locationId}")
-    public ResponseEntity<ViewStockDto> putStock(@PathVariable UUID productId, @PathVariable UUID locationId,
-                                                 @RequestBody @NonNull CreateStockDto updates) {
-        try {
-            ViewStockDto stockToUpdate = stockMapper.toViewDto(stockService.putStock(productId, locationId, updates));
-            return new ResponseEntity<>(stockToUpdate, HttpStatus.OK);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, STOCK_NOT_FOUND, exception);
-        }
+    @PutMapping
+    public ResponseEntity<StockDto> putStock(@RequestBody @NonNull StockDto updatesDto) {
+        Product product = productService.getProductById(UUID.fromString(updatesDto.getProductId()));
+        Location location = locationService.getLocationById(UUID.fromString(updatesDto.getLocationId()));
+        Stock updates = stockMapper.toEntity(product, location, updatesDto);
+        StockDto stockToUpdate = stockMapper.toDto(stockService.putStock(product.getId(), location.getId(), updates));
+        return new ResponseEntity<>(stockToUpdate, HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}/{locationId}")
     public ResponseEntity<Void> deleteStock(@PathVariable UUID productId, @PathVariable UUID locationId) {
-        try {
-            stockService.deleteStockById(productId, locationId);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception exception) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, STOCK_NOT_FOUND, exception);
-        }
+        stockService.deleteStockById(productId, locationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

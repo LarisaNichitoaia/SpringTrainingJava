@@ -2,13 +2,17 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductCategoryService {
 
+    public static final String NO_PRODUCT_CATEGORY_FOUND = "No product category found!";
     private final ProductCategoryRepository productCategoryRepo;
 
     public ProductCategory createProductCategory(String name, String description) {
@@ -17,6 +21,10 @@ public class ProductCategoryService {
     }
 
     public ProductCategory findByName(String name) {
-        return productCategoryRepo.findCategoryByName(name);
+        Optional<ProductCategory> productCategory = productCategoryRepo.findByName(name);
+        if (productCategory.isPresent()) {
+            return productCategory.get();
+        }
+        throw new NoSuchObjectException(NO_PRODUCT_CATEGORY_FOUND);
     }
 }
