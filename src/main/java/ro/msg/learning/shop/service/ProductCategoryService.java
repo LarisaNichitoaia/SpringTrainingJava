@@ -2,7 +2,7 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.customexceptions.NoSuchObjectException;
+import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
 

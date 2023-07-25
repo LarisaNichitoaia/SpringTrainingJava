@@ -1,10 +1,10 @@
 package ro.msg.learning.shop.service;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.customexceptions.NoSuchObjectException;
+import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.ProductCategory;
-import ro.msg.learning.shop.mapper.ProductMapper;
 import ro.msg.learning.shop.repository.ProductRepository;
 
 import java.util.List;
@@ -17,7 +17,6 @@ public class ProductService {
     public static final String NO_PRODUCT_IS_FOUND = "No product was found!";
     private final ProductCategoryService productCategoryService;
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
 
     public Product getProductById(UUID productId) {
         Product product = productRepository.findById(productId).orElse(null);

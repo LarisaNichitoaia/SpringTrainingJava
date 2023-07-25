@@ -1,5 +1,4 @@
 package ro.msg.learning.shop.domain.primarykeys;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,5 +9,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderDetailKey implements Serializable {
     private UUID order;
-    private UUID location;
+    private UUID product;
 }

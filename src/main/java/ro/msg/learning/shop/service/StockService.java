@@ -1,7 +1,7 @@
 package ro.msg.learning.shop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.customexceptions.NoSuchObjectException;
+import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.Stock;
 import ro.msg.learning.shop.domain.primarykeys.StockKey;
 import ro.msg.learning.shop.repository.StockRepository;
@@ -43,5 +43,9 @@ public class StockService {
             stockRepository.deleteById(new StockKey(productId, locationId));
         }
         throw new NoSuchObjectException(NO_STOCK_IS_FOUND);
+    }
+
+    public UUID findLocationsWithLargestStock(UUID productId) {
+        return stockRepository.findLocationsWithLargestStockForEachProduct(productId);
     }
 }

@@ -1,4 +1,5 @@
 package ro.msg.learning.shop.strategies;
+
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
-class SingleLocationTest {
+public class MostAbundantTest {
+
     private static final ProductService productservice = Mockito.mock(ProductService.class);
     private static final LocationService locationService = Mockito.mock(LocationService.class);
     private static final StockService stockService = Mockito.mock(StockService.class);
@@ -32,7 +34,7 @@ class SingleLocationTest {
     private static Product product1;
     private static Product product2;
     @InjectMocks
-    private SingleLocation singleLocation;
+    private MostAbundant mostAbundant;
 
     @BeforeAll
     public static void initUseCase() {
@@ -64,44 +66,10 @@ class SingleLocationTest {
     }
 
     @Test
-    void testFindLocationAndUpdateStock_ProductsTakenFromSingleLocation() {
+    void testFindLocationAndUpdateStock_ProductsTakenFromMultipleLocation() {
 
         Stock stock1 = new Stock(product1, location1, 10);
-        Stock stock2 = new Stock(product2, location1, 3);
-        Stock stock3 = new Stock(product1, location2, 11);
-        Stock stock4 = new Stock(product2, location2, 11);
-
-        when(stockService.getStockById(product1.getId(), location1.getId())).thenReturn(stock1);
-        when(stockService.getStockById(product2.getId(), location1.getId())).thenReturn(stock2);
-        when(stockService.getStockById(product1.getId(), location2.getId())).thenReturn(stock3);
-        when(stockService.getStockById(product2.getId(), location2.getId())).thenReturn(stock4);
-
-        List<StockDto> productsToBuy = new ArrayList<>();
-        StockDto stockDto1 = new StockDto(product1.getId().toString(), null, 3);
-        StockDto stockDto2 = new StockDto(product2.getId().toString(), null, 3);
-        productsToBuy.add(stockDto1);
-        productsToBuy.add(stockDto2);
-
-        List<OrderDetail> orderDetail = singleLocation.findLocationAndUpdateStock(productsToBuy);
-
-        assertEquals(productservice.getProductById(orderDetail.get(0).getProduct().getId()), product1);
-        assertEquals(productservice.getProductById(orderDetail.get(1).getProduct().getId()), product2);
-        assertEquals(locationService.getLocationById(orderDetail.get(0).getShippedFrom().getId()), location1);
-        assertEquals(locationService.getLocationById(orderDetail.get(1).getShippedFrom().getId()), location1);
-
-
-        assertEquals(7, stock1.getQuantity());
-        assertEquals(0, stock2.getQuantity());
-
-        assertEquals(11, stock3.getQuantity());
-        assertEquals(11, stock4.getQuantity());
-    }
-
-    @Test
-    void testFindLocationAndUpdateStock_FirstLocationWithSuficientStock() {
-
-        Stock stock1 = new Stock(product1, location1, 2);
-        Stock stock2 = new Stock(product2, location1, 2);
+        Stock stock2 = new Stock(product2, location1, 30);
         Stock stock3 = new Stock(product1, location2, 11);
         Stock stock4 = new Stock(product2, location2, 11);
         Stock stock5 = new Stock(product1, location3, 20);
@@ -111,6 +79,11 @@ class SingleLocationTest {
         when(stockService.getStockById(product2.getId(), location1.getId())).thenReturn(stock2);
         when(stockService.getStockById(product1.getId(), location2.getId())).thenReturn(stock3);
         when(stockService.getStockById(product2.getId(), location2.getId())).thenReturn(stock4);
+        when(stockService.getStockById(product1.getId(), location3.getId())).thenReturn(stock5);
+        when(stockService.getStockById(product2.getId(), location3.getId())).thenReturn(stock6);
+
+        when(stockService.findLocationsWithLargestStock(product1.getId())).thenReturn(location3.getId());
+        when(stockService.findLocationsWithLargestStock(product2.getId())).thenReturn(location1.getId());
 
         List<StockDto> productsToBuy = new ArrayList<>();
         StockDto stockDto1 = new StockDto(product1.getId().toString(), null, 3);
@@ -118,20 +91,21 @@ class SingleLocationTest {
         productsToBuy.add(stockDto1);
         productsToBuy.add(stockDto2);
 
-        List<OrderDetail> orderDetail = singleLocation.findLocationAndUpdateStock(productsToBuy);
+        List<OrderDetail> orderDetail = mostAbundant.findLocationAndUpdateStock(productsToBuy);
 
         assertEquals(productservice.getProductById(orderDetail.get(0).getProduct().getId()), product1);
         assertEquals(productservice.getProductById(orderDetail.get(1).getProduct().getId()), product2);
-        assertEquals(locationService.getLocationById(orderDetail.get(0).getShippedFrom().getId()), location2);
-        assertEquals(locationService.getLocationById(orderDetail.get(1).getShippedFrom().getId()), location2);
+        assertEquals(locationService.getLocationById(orderDetail.get(0).getShippedFrom().getId()), location3);
+        assertEquals(locationService.getLocationById(orderDetail.get(1).getShippedFrom().getId()), location1);
 
-        assertEquals(2, stock1.getQuantity());
-        assertEquals(2, stock2.getQuantity());
 
-        assertEquals(8, stock3.getQuantity());
-        assertEquals(8, stock4.getQuantity());
+        assertEquals(10, stock1.getQuantity());
+        assertEquals(27, stock2.getQuantity());
 
-        assertEquals(20, stock5.getQuantity());
+        assertEquals(11, stock3.getQuantity());
+        assertEquals(11, stock4.getQuantity());
+
+        assertEquals(17, stock5.getQuantity());
         assertEquals(20, stock6.getQuantity());
     }
 
@@ -155,11 +129,10 @@ class SingleLocationTest {
         productsToBuy.add(stockDto2);
 
         try {
-            singleLocation.findLocationAndUpdateStock(productsToBuy);
+            mostAbundant.findLocationAndUpdateStock(productsToBuy);
         } catch (Exception e) {
-            assertEquals("Products not available at any location.", e.getMessage());
+            assertEquals("Product not available at any location.", e.getMessage());
         }
-
     }
 
     @Test
@@ -180,7 +153,7 @@ class SingleLocationTest {
         productsToBuy.add(stockDto1);
 
         try {
-            singleLocation.findLocationAndUpdateStock(productsToBuy);
+            mostAbundant.findLocationAndUpdateStock(productsToBuy);
         } catch (Exception e) {
             assertEquals("Quantity must be a positive number", e.getMessage());
         }

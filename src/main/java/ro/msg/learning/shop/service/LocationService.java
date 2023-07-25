@@ -1,7 +1,7 @@
 package ro.msg.learning.shop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.customexceptions.NoSuchObjectException;
+import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.Location;
 import ro.msg.learning.shop.repository.LocationRepository;
 
@@ -41,6 +41,5 @@ public class LocationService {
 
     public void deleteLocationById(UUID locationId) {
         locationRepository.findById(locationId).ifPresent(locationToDelete -> locationRepository.deleteById(locationId));
-        throw new NoSuchObjectException(NO_LOCATION_IS_FOUND);
     }
 }

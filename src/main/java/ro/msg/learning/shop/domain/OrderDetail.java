@@ -1,5 +1,4 @@
 package ro.msg.learning.shop.domain;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +22,12 @@ public class OrderDetail {
     @Id
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Location location;
+    private Product product;
 
     @ManyToOne
     @JoinColumn(name = "shipped_from")
     private Location shippedFrom;
 
     private Integer quantity;
+
 }
