@@ -15,8 +15,7 @@ public class ProductCategoryService {
     public static final String NO_PRODUCT_CATEGORY_FOUND = "No product category found!";
     private final ProductCategoryRepository productCategoryRepo;
 
-    public ProductCategory createProductCategory(String name, String description) {
-        ProductCategory productCategory = ProductCategory.builder().name(name).description(description).build();
+    public ProductCategory createProductCategory(ProductCategory productCategory) {
         return productCategoryRepo.save(productCategory);
     }
 

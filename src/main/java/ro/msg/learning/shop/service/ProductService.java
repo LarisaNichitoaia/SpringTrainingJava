@@ -45,8 +45,7 @@ public class ProductService {
     public ProductCategory createOrBringExistingCategory(ProductCategory productCategory) {
         ProductCategory category = productCategoryService.findByName(productCategory.getName());
         if (category == null) {
-            category = productCategoryService.createProductCategory(productCategory.getName(),
-                    productCategory.getDescription());
+            category = productCategoryService.createProductCategory(productCategory);
         }
         return category;
     }

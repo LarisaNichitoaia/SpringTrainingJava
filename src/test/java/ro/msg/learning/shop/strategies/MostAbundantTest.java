@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ro.msg.learning.shop.controller.customexceptions.NoSuchObjectException;
 import ro.msg.learning.shop.domain.*;
 import ro.msg.learning.shop.dto.StockDto;
 import ro.msg.learning.shop.service.LocationService;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -128,11 +130,8 @@ public class MostAbundantTest {
         productsToBuy.add(stockDto1);
         productsToBuy.add(stockDto2);
 
-        try {
-            mostAbundant.findLocationAndUpdateStock(productsToBuy);
-        } catch (Exception e) {
-            assertEquals("Product not available at any location.", e.getMessage());
-        }
+        NoSuchObjectException exception = assertThrows(NoSuchObjectException.class, () -> mostAbundant.findLocationAndUpdateStock(productsToBuy));
+        assertEquals("Product not available at any location.", exception.getMessage());
     }
 
     @Test
@@ -152,10 +151,7 @@ public class MostAbundantTest {
         StockDto stockDto1 = new StockDto(product1.getId().toString(), null, -33);
         productsToBuy.add(stockDto1);
 
-        try {
-            mostAbundant.findLocationAndUpdateStock(productsToBuy);
-        } catch (Exception e) {
-            assertEquals("Quantity must be a positive number", e.getMessage());
-        }
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> mostAbundant.findLocationAndUpdateStock(productsToBuy));
+        assertEquals("Quantity must be a positive number", exception.getMessage());
     }
 }

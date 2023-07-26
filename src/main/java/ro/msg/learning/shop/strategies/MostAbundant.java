@@ -29,21 +29,23 @@ public class MostAbundant implements Strategy {
             }
             UUID locationWithBiggestStock =
                     stockService.findLocationsWithLargestStock(UUID.fromString(product.getProductId()));
-            if (locationWithBiggestStock == null)
+            if (locationWithBiggestStock == null) {
                 throw new NoSuchObjectException("Product not available at any location.");
+            }
             Stock stockAvailable =
                     stockService.getStockById(UUID.fromString(product.getProductId()), locationWithBiggestStock);
-            if (stockAvailable != null && stockAvailable.getQuantity() > product.getQuantity()) {
-                Product productWanted = productService.getProductById(UUID.fromString(product.getProductId()));
-                Location location = locationService.getLocationById(locationWithBiggestStock);
-                OrderDetail orderDetail = OrderDetail.builder().product(productWanted).shippedFrom(location)
-                        .quantity(product.getQuantity()).build();
-                locationsAndProducts.add(orderDetail);
-
-                int newQuantity = stockAvailable.getQuantity() - product.getQuantity();
-                stockAvailable.setQuantity(newQuantity);
-                stockService.putStock(UUID.fromString(product.getProductId()), locationWithBiggestStock, stockAvailable);
+            if (stockAvailable.getQuantity() < product.getQuantity()) {
+                throw new IllegalArgumentException("Not enough products in stock");
             }
+            Product productWanted = productService.getProductById(UUID.fromString(product.getProductId()));
+            Location location = locationService.getLocationById(locationWithBiggestStock);
+            OrderDetail orderDetail = OrderDetail.builder().product(productWanted).shippedFrom(location)
+                    .quantity(product.getQuantity()).build();
+            locationsAndProducts.add(orderDetail);
+
+            int newQuantity = stockAvailable.getQuantity() - product.getQuantity();
+            stockAvailable.setQuantity(newQuantity);
+            stockService.putStock(UUID.fromString(product.getProductId()), locationWithBiggestStock, stockAvailable);
         }
         return locationsAndProducts;
     }

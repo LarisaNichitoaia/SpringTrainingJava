@@ -18,14 +18,19 @@ public class LocationSelectionConfiguration {
     private final LocationService locationService;
     private final StockService stockService;
     @Value("${location-selection.strategy}")
-    private String strategy;
+    private LocationStrategy strategy;
 
     @Bean
     public Strategy strategy() {
-        if ("default".equals(strategy)) {
+        if (strategy.equals(LocationStrategy.MOST_ABUNDANT)) {
             return new MostAbundant(productService, locationService, stockService);
         } else {
             return new SingleLocation(productService, locationService, stockService);
         }
+    }
+
+    public enum LocationStrategy {
+        SINGLE_LOCATION,
+        MOST_ABUNDANT
     }
 }

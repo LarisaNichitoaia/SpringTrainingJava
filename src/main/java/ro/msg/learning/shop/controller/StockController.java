@@ -1,6 +1,4 @@
 package ro.msg.learning.shop.controller;
-
-import io.micrometer.common.lang.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +37,7 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<StockDto> createStock(@RequestBody @NonNull StockDto stockParams) {
+    public ResponseEntity<StockDto> createStock(@RequestBody StockDto stockParams) {
         Product product = productService.getProductById(UUID.fromString(stockParams.getProductId()));
         Location location = locationService.getLocationById(UUID.fromString(stockParams.getLocationId()));
         Stock stock = stockMapper.toEntity(product, location, stockParams);
@@ -48,7 +46,7 @@ public class StockController {
     }
 
     @PutMapping
-    public ResponseEntity<StockDto> putStock(@RequestBody @NonNull StockDto updatesDto) {
+    public ResponseEntity<StockDto> putStock(@RequestBody StockDto updatesDto) {
         Product product = productService.getProductById(UUID.fromString(updatesDto.getProductId()));
         Location location = locationService.getLocationById(UUID.fromString(updatesDto.getLocationId()));
         Stock updates = stockMapper.toEntity(product, location, updatesDto);

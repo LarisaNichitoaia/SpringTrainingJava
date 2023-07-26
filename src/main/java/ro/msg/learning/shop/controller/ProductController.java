@@ -1,6 +1,4 @@
 package ro.msg.learning.shop.controller;
-
-import io.micrometer.common.lang.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody @NonNull ProductDto productParams) {
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productParams) {
         ProductCategory category = productService.createOrBringExistingCategory(ProductCategory.builder()
                 .name(productParams.getProductCategoryName()).description(productParams.getProductCategoryDescription())
                 .build());
@@ -45,7 +43,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductDto> putProduct(@RequestBody @NonNull ProductDto updatesDto) {
+    public ResponseEntity<ProductDto> putProduct(@RequestBody ProductDto updatesDto) {
         ProductCategory category = productService.createOrBringExistingCategory(ProductCategory.builder()
                 .name(updatesDto.getProductCategoryName()).description(updatesDto.getProductCategoryDescription())
                 .build());
